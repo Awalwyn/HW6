@@ -1,7 +1,7 @@
 
 /******************************************************************
  *
- *   YOUR NAME / SECTION NUMBER
+ *   Avery Walwyn | Section 002
  *
  *   This java file contains the problem solutions for the methods lastBoulder,
  *   showDuplicates, and pair methods. You should utilize the Java Collection
@@ -64,11 +64,22 @@ public class ProblemSolutions {
      */
 
   public static int lastBoulder(int[] boulders) {
-
-      //
-      // ADD YOUR CODE HERE - DO NOT FORGET TO ADD YOUR NAME / SECTION # ABOVE
-      //
-      return -1;
+    //initialize priority queue (switch to max heap for heaviest boulder)
+    PriorityQueue<Integer> pq = new PriorityQueue<>(Collections.reverseOrder());
+    for (int boulder : boulders) {
+        pq.offer(boulder);
+    }
+    //pop to elements from queue, if equal == 0, or take difference
+    while (pq.size() > 1) {
+        int x = pq.poll();
+        int y = pq.poll();
+       
+        if (x!=y) {
+            pq.offer(x-y);
+        }
+    }
+    //push boulder smash result back to queue
+      return pq.isEmpty() ? 0 : pq.peek();
   }
 
 
@@ -90,11 +101,26 @@ public class ProblemSolutions {
      */
 
     public static ArrayList<String> showDuplicates(ArrayList<String> input) {
-
-        //
-        //  YOUR CODE GOES HERE
-        //
-        return new ArrayList<>();  // Make sure result is sorted in ascending order
+        //TreeMap to hold num of appearances of each string and another for duplicate
+        TreeMap<String, Integer> count = new TreeMap<>();
+        HashMap<String, Integer> duplicates = new HashMap<>();
+        for (String string : input) {
+            //check if string in map, if no add and set count, if exists ++ count
+            if (!count.containsKey(string)) {
+                count.put(string, 1);
+            }else {
+                count.put(string,count.get(string) +1);
+            }
+        }
+        //move all duplicates to duplicate hashmap
+        for (String key : count.keySet()) {
+            if (count.get(key) > 1) {
+                duplicates.put(key, count.get(key));
+            }
+        }
+        ArrayList<String> finalDuplicates = new ArrayList<>(duplicates.keySet());
+        Collections.sort(finalDuplicates);
+        return finalDuplicates; // Make sure result is sorted in ascending order
 
     }
 
@@ -130,10 +156,26 @@ public class ProblemSolutions {
      */
 
     public static ArrayList<String> pair(int[] input, int k) {
+        //HashSet to track old numbers
+        HashSet<Integer> old = new HashSet<>();
+        //hashSet to check for duplicates
+        HashSet<String> pairs = new HashSet<>();
+        //iterate through input array, calc compliment and check if exists
+        for (int num : input) {
+            int complement = k-num;
 
-        //
-        //  YOUR CODE GOES HERE
-        //
-        return new ArrayList<>();  // Make sure returned lists is sorted as indicated above
+        //if exists sort pair and add to hashset
+        if (old.contains(complement)) {
+            int smaller = Math.min(num, complement);
+            int larger = Math.max(num, complement);
+            pairs.add("(" + smaller+ ", " + larger+ ")");
+        }
+        old.add(num);
+       
+
+        }
+        ArrayList<String> finalPairs = new ArrayList<>(pairs);
+        Collections.sort(finalPairs);
+        return finalPairs;  // Make sure returned lists is sorted as indicated above
     }
 }

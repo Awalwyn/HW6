@@ -1,7 +1,7 @@
 
 /******************************************************************
  *
- *   YOUR NAME / SECTION NUMBER
+ *   Avery Walwyn || Section 002
  *
  *   Note, additional comments provided throughout this source code
  *   is for educational purposes
@@ -150,9 +150,13 @@ class PriorityQueue<E, P> {
      */
 
     public Node add(E e, P priority) {
+        //make new node and set val, priority, and index
+        Node newNode = new Node(e, priority, tree.size());
+        tree.add(newNode);
 
-        // YOUR CODE GOES HERE
-        return null;
+        //pullUp method to re-establish heap
+        pullUp(tree.size()-1);
+        return newNode;
     }
 
 
@@ -167,9 +171,14 @@ class PriorityQueue<E, P> {
      */
 
     public boolean contains(E e) {
-
-        // ADD YOUR CODE HERE
-        return false;
+        boolean contains = false;
+        //iterate through list of nodes and compare to param
+        for (Node node:tree) {
+            if (node.value.equals(e)){
+                contains = true;
+            }
+        }
+        return contains;
     }
 
 
